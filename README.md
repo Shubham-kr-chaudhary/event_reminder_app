@@ -1,4 +1,4 @@
-# EventMind - Smart Event Reminder App
+# Event Reminder App
 
 A full-stack MERN application designed to organize events, visualize progress, and send web push notifications for upcoming reminders. Built with a focus on clean architecture, smooth animations, and micro-interactions.
 
