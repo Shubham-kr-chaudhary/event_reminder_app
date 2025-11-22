@@ -17,15 +17,28 @@ export default api;
 
 export async function registerPush() {
   if ('serviceWorker' in navigator) {
-    const register = await navigator.serviceWorker.register('/sw.js');
-const publicVapidKey = 'BPkm3T6sr933V098yzrcKU9-8bygbcqS1Pef3xmjTdbQGnEFEFjUDbNwpAYgFCozIXsPxdcYdmIq1rX_X854ik8';
+    try {
+      const permission = await Notification.requestPermission();
+      
+      if (permission !== 'granted') {
+        console.error('Permission not granted for Notification');
+        return;
+      }
+      const register = await navigator.serviceWorker.register('/sw.js');
+      
+      const publicVapidKey = 'BPkm3T6sr933V098yzrcKU9-8bygbcqS1Pef3xmjTdbQGnEFEFjUDbNwpAYgFCozIXsPxdcYdmIq1rX_X854ik8';
 
-    const subscription = await register.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-    });
+      const subscription = await register.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      });
 
-    await api.post('/subscribe', subscription);
+      await api.post('/subscribe', subscription);
+      console.log('Push Registered Successfully');
+
+    } catch (error) {
+      console.error('Failed to register push:', error);
+    }
   }
 }
 

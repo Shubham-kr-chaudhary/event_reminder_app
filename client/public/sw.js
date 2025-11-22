@@ -43,14 +43,18 @@ self.addEventListener('notificationclick', function(event) {
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window' }).then(function(clientList) {
+      
       for (let i = 0; i < clientList.length; i++) {
         const client = clientList[i];
-        if (client.url === 'http://localhost:5173/dashboard' && 'focus' in client) {
+        
+        if (client.url.includes('/dashboard') && 'focus' in client) {
           return client.focus();
         }
       }
+      
       if (self.clients.openWindow) {
-        return self.clients.openWindow('http://localhost:5173/dashboard');
+        return self.clients.openWindow('/dashboard'); 
+        
       }
     })
   );
